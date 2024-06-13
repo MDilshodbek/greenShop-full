@@ -20,7 +20,17 @@ const Slider1 = () => {
           SHOP NOW
         </Button>
       </div>
-      <div className="w-[40%]"></div>
+      <div className="w-[40%] flex items-center justify-center relative">
+        <img
+          src="https://firebasestorage.googleapis.com/v0/b/aema-image-upload.appspot.com/o/greenshop%2Fimages%2Fflower1.png?alt=media&token=0b53d608-7264-4c54-b497-a9bf054fcd9d"
+          alt="flower img"
+        />
+        <img
+          className="w-[150px] h-[150px] absolute bottom-0 left-[40px]"
+          src="https://firebasestorage.googleapis.com/v0/b/aema-image-upload.appspot.com/o/greenshop%2Fimages%2Fflower1.png?alt=media&token=0b53d608-7264-4c54-b497-a9bf054fcd9d"
+          alt="flower img"
+        />
+      </div>
     </div>
   );
 };
