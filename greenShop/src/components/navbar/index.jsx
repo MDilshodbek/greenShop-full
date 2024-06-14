@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <div className="w-[80%] h-20 m-auto flex items-center justify-between border-b border-b-[#46A35880]">
       <div>
-        <img
+        <img className="cursor-pointer"
           src="https://firebasestorage.googleapis.com/v0/b/aema-image-upload.appspot.com/o/greenshop%2Ficons%2Flogo.svg?alt=media&token=fc9659d6-f435-43b9-a624-8b0d3a574baa"
           alt="logo"
         />
