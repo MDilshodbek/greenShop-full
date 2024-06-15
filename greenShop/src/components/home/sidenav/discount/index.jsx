@@ -1,4 +1,4 @@
-import disFlower from "../../../assets/disFlower.png";
+import disFlower from "../../../../assets/disFlower.png"
 
 const Discount = () => {
   return (
