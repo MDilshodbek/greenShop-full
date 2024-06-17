@@ -1,25 +1,20 @@
 import { Skeleton } from "antd";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { useSearchParams } from "../../../../hooks";
+import { useQuery } from "@tanstack/react-query";
+import useAxios from "../../../../hooks/axios";
 
 const Categories = () => {
+  const axios = useAxios();
   const { getParams, setParams } = useSearchParams();
-  const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState([]);
 
-  useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const { data } = await axios({
-        url: "http://localhost:8080/api/flower/category?access_token=64bebc1e2c6d3f056a8c85b7",
-        method: "GET",
-      });
-      setLoading(false);
+  const { data, isLoading } = useQuery({
+    queryKey: "categories",
+    queryFn: async () => {
+      const { data } = await axios({ url: "/flower/category" });
 
-      setCategories(data.data);
-    })();
-  }, []);
+      return data.data;
+    },
+  });
 
   const selectedCategory = getParams("category") ?? "house-plants";
   const normal_text =
@@ -31,7 +26,7 @@ const Categories = () => {
     <div>
       <h3 className="font-bold">Categories</h3>
       <div className="pl-[12px] w-full">
-        {loading
+        {isLoading
           ? Array.from({ length: 10 }).map((_, idx) => (
               <Skeleton.Input
                 block
@@ -41,7 +36,7 @@ const Categories = () => {
                 style={{ width: "100%" }}
               />
             ))
-          : categories.map((category) => (
+          : data?.map((category) => (
               <div
                 key={category._id}
                 className={

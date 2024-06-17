@@ -6,7 +6,6 @@ import createStore from "react-auth-kit/createStore";
 import AuthProvider from "react-auth-kit";
 import { Provider } from "react-redux";
 import store from "./redux";
-
 const authStore = createStore({
   authName: "_auth",
   authType: "cookie",
