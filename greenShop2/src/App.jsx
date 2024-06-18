@@ -1,13 +1,13 @@
+import { Route } from "react-router-dom";
 import Navbar from "./components/navbar";
-import SideNav from "./components/side-nav";
-import SliderSection from "./components/slider-section";
 
 function App() {
   return (
     <div>
       <Navbar />
-      <SliderSection />
-      <SideNav />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </div>
   );
 }
