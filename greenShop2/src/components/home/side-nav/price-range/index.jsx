@@ -1,8 +1,13 @@
 import { Slider } from "antd";
 import { useState } from "react";
+import { useSearchParams } from "../../../../hooks/useSearchParams";
 
 const PriceRange = () => {
-  const [range, SetRange] = useState([0, 1500]);
+  const { getParams, setParams } = useSearchParams();
+
+  const min = Number(getParams("min") ?? 0);
+  const max = Number(getParams("max") ?? 1500);
+  const [range, SetRange] = useState([min, max]);
 
   return (
     <div className="mt-[36px] ">
@@ -20,6 +25,12 @@ const PriceRange = () => {
         <button
           type="button"
           className="w-[100px] h-[36px] bg-[#46A358] rounded-md flex items-center justify-center text-white gap-2 cursor-pointer mt-[16px]"
+          onClick={() => {
+            setParams({
+              min: range[0],
+              max: range[1],
+            });
+          }}
         >
           Filter
         </button>

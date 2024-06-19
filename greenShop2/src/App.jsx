@@ -1,12 +1,13 @@
-import { Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/navbar";
+import Home from "./pages/home";
 
 function App() {
   return (
     <div>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route index element={<Home />} />
       </Routes>
     </div>
   );
