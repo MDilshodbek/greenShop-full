@@ -1,5 +1,5 @@
 import { Skeleton } from "antd";
-import { useSearchParams } from "../../../../hooks";
+import { useSearchParams } from "../../../../hooks/useSearchParams";
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../../hooks/axios";
 

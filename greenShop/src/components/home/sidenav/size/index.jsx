@@ -1,4 +1,4 @@
-import { useSearchParams } from "../../../../hooks";
+import { useSearchParams } from "../../../../hooks/useSearchParams";
 
 const Sizes = () => {
   const { getParams, setParams } = useSearchParams();

@@ -1,5 +1,5 @@
 import { Select } from "antd";
-import { useSearchParams } from "../../../../../hooks";
+import { useSearchParams } from "../../../../../hooks/useSearchParams";
 
 const Header = () => {
   const { setParams, getParams } = useSearchParams();
