@@ -1,19 +1,33 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "../../../../hooks/useSearchParams";
 import useAxios from "../../../../hooks/axios";
-import Card from "./card";
+import Card from "./card/index";
 import Loading from "./card/loading";
 
 const Body = () => {
   const axios = useAxios();
   const { getParams } = useSearchParams();
 
-  const category = getParams("category" ?? "house-plants");
+  const category = getParams("category") ?? "house-plants";
+  const min = getParams("min") ?? 0;
+  const max = getParams("max") ?? 1500;
+  const sort = getParams("sort") ?? "default";
+  const type = getParams("type") ?? "all-plants";
+
+  const cache_key = `category=${category}&min=${min}&max=${max}&sort=${sort}`;
 
   const { data, isLoading } = useQuery({
-    queryKey: [category],
+    queryKey: [cache_key],
     queryFn: async () => {
-      const { data } = await axios({ url: `/flower/category/${category}` });
+      const { data } = await axios({
+        url: `/flower/category/${category}`,
+        params: {
+          range_min: min,
+          range_max: max,
+          sort,
+          type,
+        },
+      });
 
       return data.data;
     },

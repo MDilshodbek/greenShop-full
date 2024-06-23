@@ -1,12 +1,16 @@
-import Header from "../sidenav/categories/haeder";
+import Header from "./haeder";
 import Body from "./body";
+import CategoryModal from "./modals/category";
 
 const Category = () => {
   return (
-    <div className="w-full">
-      <Header />
-      <Body />
-    </div>
+    <>
+      <CategoryModal />
+      <div className="w-full">
+        <Header />
+        <Body />
+      </div>
+    </>
   );
 };
 
