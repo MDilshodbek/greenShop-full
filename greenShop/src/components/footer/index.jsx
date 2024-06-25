@@ -1,4 +1,5 @@
 import Contacts from "./contacts";
+import Footer_nav from "./footer_nav";
 import Newsletter from "./newsletter";
 
 const Footer = () => {
@@ -6,6 +7,7 @@ const Footer = () => {
     <div className="mt-[100px]">
       <Newsletter />
       <Contacts />
+      <Footer_nav />
     </div>
   );
 };
