@@ -5,7 +5,7 @@ const Card = ({ title, main_image, price }) => {
         <img className="w-full h-full" src={main_image} alt="" />
       </div>
       <h3>{title}</h3>
-      <p className="text-[#46A358] font-bold">{price}</p>
+      <p className="text-[#46A358] font-bold">$ {price}</p>
     </div>
   );
 };
