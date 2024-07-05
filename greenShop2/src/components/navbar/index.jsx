@@ -6,7 +6,7 @@ import {
 import { Button } from "antd";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setauthModal } from "../../redux/generic-slices/modals";
+import setauthModal from "../../redux/generic-slices/modals";
 import AuthModal from "./modals/auth";
 
 const Navbar = () => {
