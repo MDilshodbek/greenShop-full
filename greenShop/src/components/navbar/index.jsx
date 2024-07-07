@@ -15,9 +15,10 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { user } = getUser();
+
   return (
     <>
-      const {} = useAuth()
       <AuthModal />
       <div className="w-[80%] h-20 m-auto flex items-center justify-between border-b border-b-[#46A35880]">
         <div>
@@ -50,7 +51,7 @@ const Navbar = () => {
           {isAuthed() ? (
             <Button
               primary
-              className="w-[100px] h-[35px] bg-[#46a358] flex gap-2 items-center text-white cursor-pointer animate-bounce"
+              className="w-[100px] h-[35px] bg-[#46a358] flex gap-2 items-center text-white cursor-pointer "
             >
               {user.name}
             </Button>

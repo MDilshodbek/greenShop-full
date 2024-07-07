@@ -27,8 +27,12 @@ const Register = () => {
         method: "POST",
       });
 
+      const { token, user } = data.data;
+
       signIn({ token, user });
       dispatch(setauthModal());
+      window.location.reload();
+
     } catch (error) {
       notification.error({
         message: "Error",
@@ -85,7 +89,7 @@ const Register = () => {
           </Form.Item>
 
           <Form.Item
-            name="password"
+            name="confirm-password"
             rules={[
               { required: true, message: "Please confirm your password!" },
             ]}
@@ -99,7 +103,6 @@ const Register = () => {
 
           <button className="flex rounded-md bg-[#46A358] gap-1 text-base items-center justify-center text-white w-full h-[45px] my-[27px]">
             {loading ? <LoadingOutlined /> : "Register"}
-            Register
           </button>
         </Form>
 

@@ -10,6 +10,7 @@ import useAxios from "../../../../../hooks/axios";
 import useAuth from "../../../../../configs/auth";
 import { useDispatch } from "react-redux";
 import { setauthModal } from "../../../../../redux/generic-slices/modals";
+import { signInWithGoogle } from "../../../../../configs/firebase";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,8 @@ const Login = () => {
   const { signIn } = useAuth();
 
   const onFinish = async (e) => {
+    if (loading) return;
+
     setLoading(true);
     try {
       const { data } = await axios({
@@ -26,7 +29,6 @@ const Login = () => {
         data: e,
       });
       const { token, user } = data.data;
-
       signIn({ token, user });
 
       notification.success({
@@ -34,6 +36,7 @@ const Login = () => {
         description: "You have logged in successfully",
       });
       dispatch(setauthModal());
+      window.location.reload();
     } catch (error) {
       notification.error({
         message: "Oops! Something went wrong!",
@@ -42,6 +45,41 @@ const Login = () => {
     }
 
     setLoading(false);
+  };
+
+  const signWithGoogle = async () => {
+    try {
+      const { user } = await signInWithGoogle({});
+      const { data } = await axios({
+        url: "user/sign-in/google",
+        method: "POST",
+        data: {
+          email: user.email,
+        },
+      });
+      const { token, user: authUser } = data.data;
+
+      console.log("DATA", data);
+
+      signIn({
+        token,
+        user: authUser,
+      });
+
+      console.log({ token, authUser });
+      notification.success({
+        message: "Google Sign-In Succeeded",
+      });
+
+      dispatch(setauthModal());
+      window.location.reload();
+    } catch (error) {
+      console.log("ERROR===", error);
+      notification.error({
+        message: "Google Sign-In Failed",
+        description: error?.response?.data?.extraMessage,
+      });
+    }
   };
 
   return (
@@ -92,6 +130,7 @@ const Login = () => {
         Login with Facebook
       </button>
       <button
+        onClick={signWithGoogle}
         type="button"
         className="cursor-pionter flex items-center gap-2 border border-[#eaeaea] h-[40px] w-full rounded-md mb-[15px]"
       >
