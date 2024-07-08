@@ -3,6 +3,6 @@ import modal from "./generic_slices/modals";
 
 export default configureStore({
   reducer: {
-    modal
+    modal,
   },
 });

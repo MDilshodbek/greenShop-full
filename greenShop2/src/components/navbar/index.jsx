@@ -4,18 +4,9 @@ import {
   ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { Button } from "antd";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import setauthModal from "../../redux/generic-slices/modals";
-import AuthModal from "./modals/auth";
-
 const Navbar = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   return (
     <>
-      <AuthModal />
       <div className="w-[80%] h-20 m-auto flex items-center justify-between border-b border-b-[#46A35880]">
         <div>
           <img
@@ -25,10 +16,7 @@ const Navbar = () => {
           />
         </div>
         <div className="flex gap-12 items-center h-full">
-          <h3
-            onClick={() => navigate("/")}
-            className="relative cursor-pointer before:w-full before:h-1 before:absolute before:left-0 hover:before:bg-[#46a358] before:bottom-[-28px] before:content-['']"
-          >
+          <h3 className="relative cursor-pointer before:w-full before:h-1 before:absolute before:left-0 hover:before:bg-[#46a358] before:bottom-[-28px] before:content-['']">
             Home
           </h3>
           <h3 className="relative cursor-pointer before:w-full before:h-1 before:absolute before:left-0 hover:before:bg-[#46a358] before:bottom-[-28px] before:content-['']">
@@ -45,7 +33,6 @@ const Navbar = () => {
           <SearchOutlined className="cursor-pointer text-[20px]" />
           <ShoppingCartOutlined className="cursor-pointer text-[20px]" />
           <Button
-            onClick={() => dispatch(setauthModal())}
             primary
             className="w-[100px] h-[35px] bg-[#46a358] flex gap-2 items-center text-white cursor-pointer animate-bounce"
           >

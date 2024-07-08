@@ -1,36 +1,36 @@
 import { Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { setauthModal } from "../../../../redux/generic-slices/modals";
+import { setAuthModal } from "../../../../redux/generic_slices/modals";
 import Login from "./login";
-import { useState } from "react";
 import Register from "./register";
+import { useState } from "react";
 
 const AuthModal = () => {
   const dispatch = useDispatch();
   const { authModal } = useSelector(({ modal }) => modal);
   const [active, setActive] = useState("login");
+
   return (
     <Modal
       open={authModal}
+      onCancel={() => dispatch(setAuthModal())}
       footer={false}
-      onCancel={() => dispatch(setauthModal())}
-      onOk={() => dispatch(setauthModal())}
     >
-      <div className="flex mt-6 gap-2.5 items-center justify-center">
+      <div className="flex gap-2.5 mt-6 items-center justify-center">
         <h3
-          className={`cursor-pointer text-xl transitio-all ${
+          onClick={() => setActive("login")}
+          className={`cursor-pointer text-xl transition-all ${
             active === "login" && "text-[#46A358]"
           }`}
-          onClick={() => setActive("login")}
         >
           Login
         </h3>
-        <div className="border h-4 bg-[#3d3d3d]" />
+        <div className="border h-4 bg-[#3D3D3D]" />
         <h3
-          className={`cursor-pointer text-xl transitio-all ${
+          onClick={() => setActive("register")}
+          className={`cursor-pointer text-xl transition-all ${
             active === "register" && "text-[#46A358]"
           }`}
-          onClick={() => setActive("register")}
         >
           Register
         </h3>

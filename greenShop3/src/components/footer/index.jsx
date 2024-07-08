@@ -4,7 +4,7 @@ import Newsletter from "./newsletter";
 
 const Footer = () => {
   return (
-    <div className="mt-[100px]">
+    <div className="mt-[100px] max-md:hidden">
       <Newsletter />
       <Contacts />
       <Footer_nav />
