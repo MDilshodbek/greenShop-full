@@ -1,17 +1,42 @@
 import {
   FacebookFilled,
   GoogleOutlined,
+  LoadingOutlined,
   ScanOutlined,
 } from "@ant-design/icons";
-import { Divider, Form, Input } from "antd";
+import { Divider, Form, Input, notification } from "antd";
+import { useState } from "react";
+import useAxious from "../../../../../hooks/axios";
 
 const Login = () => {
+  const axios = useAxious();
+  const [loading, setLoading] = useState(false);
+
+  const onFinish = async (e) => {
+    setLoading(true);
+    try {
+      const { data } = await axios({
+        method: "Post",
+        url: "/user/sign-in",
+        data: e,
+      });
+    } catch (error) {
+      notification.error({
+        message: "Oops! something went wrong!",
+        description: error?.response?.data?.extraMessage,
+      });
+    }
+
+    setLoading(false);
+  };
+
   return (
     <div className="w-[80%] m-auto">
       <h3 className="mt-8 text-sm font-medium">
         Enter your email and password
       </h3>
       <Form
+        onFinish={onFinish}
         className="mt-4"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 32 }}
@@ -42,7 +67,7 @@ const Login = () => {
           type="submit"
           className="rounded-md gap-1 bg-[#46A358] flex items-center justify-center text-base text-white w-full h-[45px] my-[27px]"
         >
-          Login
+          {loading ? <LoadingOutlined /> : "Login"}
         </button>
       </Form>
 
