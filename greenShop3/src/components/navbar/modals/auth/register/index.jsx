@@ -1,13 +1,53 @@
-import { FacebookFilled, GoogleOutlined } from "@ant-design/icons";
-import { Divider, Form, Input } from "antd";
+import {
+  FacebookFilled,
+  GoogleOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
+import { Divider, Form, Input, notification } from "antd";
+import useAxious from "../../../../../hooks/axios";
+import useAuth from "../../../../../configs/auth";
+import { useDispatch } from "react-redux";
+import { setAuthModal } from "../../../../../redux/generic_slices/modals";
+import { useState } from "react";
 
 const Register = () => {
+  const [loading, setLoading] = useState(false);
+  const { signIn } = useAuth();
+  const axios = useAxious();
+  const dispatch = useDispatch();
+
+  const onFinish = async (e) => {
+    if (loading) return;
+    
+    setLoading(true);
+    try {
+      const { data } = await axios({
+        method: "POST",
+        url: "/user/sign-up/",
+        data: e,
+      });
+
+      console.log(data);
+
+      const { token, user } = data.data;
+
+      signIn({ token, user });
+      dispatch(setAuthModal());
+    } catch (error) {
+      notification.error({
+        message: "Error",
+        description: error.response.data.extraMessage,
+      });
+    }
+    setLoading(false);
+  };
   return (
     <div className="w-[80%] m-auto">
       <h3 className="mt-8 text-sm font-medium">
         Enter your email and password to register
       </h3>
       <Form
+        onFinish={onFinish}
         className="mt-4"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 32 }}
@@ -55,7 +95,7 @@ const Register = () => {
           type="submit"
           className="rounded-md gap-1 bg-[#46A358] flex items-center justify-center text-base text-white w-full h-[45px] my-[27px]"
         >
-          Register
+          {loading ? <LoadingOutlined /> : "Register"}
         </button>
       </Form>
 

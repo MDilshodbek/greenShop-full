@@ -7,12 +7,19 @@ import {
 import { Divider, Form, Input, notification } from "antd";
 import { useState } from "react";
 import useAxious from "../../../../../hooks/axios";
+import useAuth from "../../../../../configs/auth";
+import { useDispatch } from "react-redux";
+import { setAuthModal } from "../../../../../redux/generic_slices/modals";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const { signIn } = useAuth;
   const axios = useAxious();
   const [loading, setLoading] = useState(false);
 
   const onFinish = async (e) => {
+    if (loading) return;
+
     setLoading(true);
     try {
       const { data } = await axios({
@@ -20,6 +27,19 @@ const Login = () => {
         url: "/user/sign-in",
         data: e,
       });
+
+      signIn({
+        token,
+        user,
+      });
+      notification.success({
+        message: "Logged in",
+        description: "You have logged in successfully",
+      });
+
+      console.log(e, data);
+
+      dispatch(setAuthModal());
     } catch (error) {
       notification.error({
         message: "Oops! something went wrong!",
