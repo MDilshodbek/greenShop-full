@@ -1,5 +1,5 @@
 import { HeartOutlined } from "@ant-design/icons";
-import { Divider, Rate, Tag } from "antd";
+import { Divider, Rate, Tag, Tooltip } from "antd";
 import { useProductFeatures } from "../../../features";
 import { useDispatch } from "react-redux";
 import { setauthModal } from "../../../../../redux/generic-slices/modals";
@@ -12,6 +12,7 @@ const Details = () => {
   const dispatch = useDispatch();
   const {
     product: { data },
+    user: { data: user },
   } = useProductFeatures();
 
   const addToWishList = () => {
@@ -22,16 +23,32 @@ const Details = () => {
 
   return (
     <div className="flex-1">
-      <h3 className="text-[28px] font-bold">{data?.title}</h3>
-      <div className="flex w-full justify-between ">
-        <h3 className="text-[28px] font-bold text-[#46A358]">${data?.price}</h3>
-        <div className="flex gap-2">
+      <div className="flex justify-between">
+        <div className="flex items-center gap-4">
+          <Tooltip
+            className="w-[50px] h-[50px] rounded-full"
+            title={`${user?.name} ${user?.surname}`}
+          />
+          <img
+            className="rounded-full w-[50px] h-[50px] cursor-pointer"
+            src={data?.profile_photo}
+            alt={`${user?.name} ${user?.surname}`}
+          />
+        </div>
+        <div>
+          <h3 className="text-[28px] font-bold">{data?.title}</h3>
+          <h3 className="text-[28px] font-bold text-[#46A358]">
+            ${data?.price}
+          </h3>
+        </div>
+        <div className="flex gap-2 items-end">
           <Rate />
           <p className="text-[12px]">
             {data?.comments?.length} Customer Review
           </p>
         </div>
       </div>
+      {/* <div className="flex w-full justify-between "></div> */}
 
       <Divider />
 

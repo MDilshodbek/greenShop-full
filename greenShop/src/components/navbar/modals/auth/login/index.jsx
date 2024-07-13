@@ -51,7 +51,7 @@ const Login = () => {
     try {
       const { user } = await signInWithGoogle({});
       const { data } = await axios({
-        url: "user/sign-in/google",
+        url: "/user/sign-in/google",
         method: "POST",
         data: {
           email: user.email,

@@ -2,7 +2,7 @@ import { Skeleton } from "antd";
 
 const Loading = () => {
   return (
-    <div className="w-[258px]">
+    <div>
       <div className="w-full h-[300px] bg-[#fbfbfb] flex items-center justify-center">
         <Skeleton.Image active />
       </div>

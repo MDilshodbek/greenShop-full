@@ -17,7 +17,19 @@ export const useProductFeatures = () => {
     },
   });
 
+  const user = useQuery({
+    queryKey: [`user/${product?.data?.created_by}`],
+    queryFn: async () => {
+      const { data } = await axios({
+        url: `user/by_id/${product?.data?.created_by}`,
+      });
+      return data?.data;
+    },
+    enabled: !!product?.data,
+  });
+
   return {
     product,
+    user,
   };
 };

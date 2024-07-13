@@ -10,10 +10,11 @@ import useAxious from "../../../../../hooks/axios";
 import useAuth from "../../../../../configs/auth";
 import { useDispatch } from "react-redux";
 import { setAuthModal } from "../../../../../redux/generic_slices/modals";
+import { signInWithGoogle } from "../../../../../configs/farebase";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { signIn } = useAuth;
+  const { signIn } = useAuth();
   const axios = useAxious();
   const [loading, setLoading] = useState(false);
 
@@ -27,6 +28,8 @@ const Login = () => {
         url: "/user/sign-in",
         data: e,
       });
+
+      const { token, user } = data.data;
 
       signIn({
         token,
@@ -48,6 +51,33 @@ const Login = () => {
     }
 
     setLoading(false);
+  };
+
+  const signWithGoogle = async () => {
+    try {
+      const { user } = await signInWithGoogle();
+
+      const { data } = await axios({
+        url: "/user/sign-in/google",
+        method: "POST",
+        data: {
+          email: user.email,
+        },
+      });
+
+      const { token, user: AuthUser } = data;
+
+      notification.success({
+        message: "Logged in",
+        description: "You have logged in successfully",
+      });
+      console.log(token, AuthUser);
+    } catch (error) {
+      notification.error({
+        message: "Oops! Something went wrong!",
+        description: error?.response?.data?.extraMessage,
+      });
+    }
   };
 
   return (
@@ -101,6 +131,7 @@ const Login = () => {
         Login with Facebook
       </button>
       <button
+        onClick={signWithGoogle}
         type="button"
         className="cursor-pointer flex items-center gap-2 border border-[#EAEAEA] h-[40px] w-full rounded-md mb-[15px]"
       >
