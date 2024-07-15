@@ -23,7 +23,7 @@ const Navbar = () => {
     <>
       <AuthModal />
       <SiteMap />
-      <div className="w-[80%] h-20 m-auto flex items-center justify-between border-b border-b-[#46A35880]">
+      <div className="w-[80%] h-20 m-auto flex items-center justify-between border-b border-b-[#46A35880] max-md:w-[95%]">
         <div>
           <img
             className="cursor-pointer"

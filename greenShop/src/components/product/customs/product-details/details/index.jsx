@@ -28,19 +28,21 @@ const Details = () => {
           <Tooltip
             className="w-[50px] h-[50px] rounded-full"
             title={`${user?.name} ${user?.surname}`}
-          />
-          <img
-            className="rounded-full w-[50px] h-[50px] cursor-pointer"
-            src={data?.profile_photo}
-            alt={`${user?.name} ${user?.surname}`}
-          />
+          >
+            <img
+              className="rounded-full w-[50px] h-[50px] cursor-pointer"
+              src={user?.profile_photo}
+              alt={`${user?.name} ${user?.surname}`}
+            />
+          </Tooltip>
+          <div>
+            <h3 className="text-[28px] font-bold">{data?.title}</h3>
+            <h3 className="text-[28px] font-bold text-[#46A358]">
+              ${data?.price}
+            </h3>
+          </div>
         </div>
-        <div>
-          <h3 className="text-[28px] font-bold">{data?.title}</h3>
-          <h3 className="text-[28px] font-bold text-[#46A358]">
-            ${data?.price}
-          </h3>
-        </div>
+
         <div className="flex gap-2 items-end">
           <Rate />
           <p className="text-[12px]">
