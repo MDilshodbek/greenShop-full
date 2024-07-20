@@ -7,15 +7,16 @@ import useAuth from "../../../../../configs/auth";
 import { useDispatch } from "react-redux";
 import { setauthModal } from "../../../../../redux/generic-slices/modals";
 import { useNavigate } from "react-router-dom";
+import { useShoppingService } from "../../../../../services/shopping";
 
-const Card = ({ title, main_image, price, _id, category }) => {
+const Card = (props) => {
   const { isAuthed } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { onAdd } = useShoppingService();
 
-  const addToShoppingCart = () => {
-    if (!isAuthed()) return dispatch(setauthModal());
-  };
+  const { title, main_image, price, _id, category } = props;
+
   const addToWishList = () => {
     if (!isAuthed()) return dispatch(setauthModal());
   };
@@ -30,7 +31,7 @@ const Card = ({ title, main_image, price, _id, category }) => {
           <img className="w-full h-full" src={main_image} alt="flower" />
           <div className="absolute bottom-6 z-10 gap-4 left-[70px] hidden group-hover:flex">
             <div
-              onClick={addToShoppingCart}
+              onClick={() => onAdd(props)}
               className="w-[35px] h-[35px] rounded-md cursor-pointer bg-white flex items-center justify-center"
             >
               <ShoppingCartOutlined />
@@ -57,7 +58,6 @@ const Card = ({ title, main_image, price, _id, category }) => {
           <img className="w-full h-full" src={main_image} alt="flower" />
           <div className="absolute bottom-6 z-10 gap-4 left-[70px] hidden group-hover:flex">
             <div
-              onClick={addToShoppingCart}
               className="w-[35px] h-[35px] rounded-md cursor-pointer bg-white flex items-center justify-center"
             >
               <ShoppingCartOutlined />
