@@ -14,50 +14,52 @@ export const useShoppingService = () => {
     notification.success({ message: "Product added to cart" });
 
     if (!index) {
-      return dispatch(
-        setShoppingProducts([...products, { ...product, quantity: 1 }])
+      const newProduct = { ...product, quantity: 1 };
+      const updatedProducts = [...products, newProduct];
+      localStorage.setItem(
+        "products",
+        JSON.stringify([...products, updatedProducts])
       );
+      return dispatch(setShoppingProducts(updatedProducts));
     }
 
-    dispatch(
-      setShoppingProducts(
-        products.map((item) =>
-          item._id === product._id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
-      )
+    const updatedProducts = products.map((item) =>
+      item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
     );
+
+    localStorage.setItem("products", JSON.stringify(updatedProducts));
+
+    dispatch(setShoppingProducts(updatedProducts));
   };
 
   const onDelete = (product) => {
-    dispatch(
-      setShoppingProducts(products.filter((item) => item._id !== product._id))
-    );
+    const newProduct = products.filter((item) => item._id !== product._id);
+
+    localStorage.setItem("products", JSON.stringify(newProduct));
+
+    dispatch(setShoppingProducts(newProduct));
+    notification.success({ message: "Product removed from cart" });
   };
 
   const onIncrement = (product) => {
-    dispatch(
-      setShoppingProducts(
-        products.map((item) =>
-          item._id === product._id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        )
-      )
+    const newProduct = products.map((item) =>
+      item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item
     );
+    localStorage.setItem("products", JSON.stringify(newProduct));
+
+    dispatch(setShoppingProducts(newProduct));
   };
 
   const onDecrement = (product) => {
-    dispatch(
-      setShoppingProducts(
-        products.map((item) =>
-          item._id === product._id
-            ? { ...item, quantity: item.quantity > 1 ? item.quantity - 1 : 1 }
-            : item
-        )
-      )
+    const newProduct = products.map((item) =>
+      item._id === product._id
+        ? { ...item, quantity: item.quantity > 1 ? item.quantity - 1 : 1 }
+        : item
     );
+
+    localStorage.setItem("products", JSON.stringify(newProduct));
+
+    dispatch(setShoppingProducts(newProduct));
   };
 
   const applyCoupon = async (coupon_code) => {
@@ -71,5 +73,13 @@ export const useShoppingService = () => {
     dispatch(setCoupon(data?.data));
   };
 
-  return { onAdd, products, onDelete, onIncrement, onDecrement, applyCoupon, coupon };
+  return {
+    onAdd,
+    products,
+    onDelete,
+    onIncrement,
+    onDecrement,
+    applyCoupon,
+    coupon,
+  };
 };
