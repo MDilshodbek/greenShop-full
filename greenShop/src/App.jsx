@@ -4,6 +4,7 @@ import Home from "./pages/home";
 import Footer from "./components/footer";
 import Product from "./pages/product";
 import ShoppingCart from "./pages/shopping-cart";
+import ProCheckout from "./pages/proCheckout";
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
       <Routes>
         <Route index element={<Home />} />
         <Route path="/product/:category/:productId" element={<Product />} />
-        <Route path="/shopping-cart" element={<ShoppingCart/>} />
+        <Route path="/shopping-cart" element={<ShoppingCart />} />
+        <Route path="/product-checkout" element={<ProCheckout />} />
       </Routes>
       <Footer />
     </div>
