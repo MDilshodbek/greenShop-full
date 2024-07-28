@@ -31,3 +31,10 @@
 .slick-active button {
   background-color: #46a358 !important;
 }
+.ant-radio-wrapper .ant-radio-checked .ant-radio-inner {
+  border-color: #46a358;
+  background-color: #46a358;
+}
+.ant-radio-wrapper:hover .ant-radio-inner {
+  border-color: #46a358;
+}

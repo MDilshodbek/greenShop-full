@@ -66,7 +66,10 @@ const Total = () => {
           )}
         </h1>
       </div>
-      <button className="mt-[30px] h-[40px] w-full text-white gap-1 rounded-md flex items-center justify-center text-base bg-[#46A358] cursor-pointer">
+      <button
+        onClick={() => navigate("/product-checkout")}
+        className="mt-[30px] h-[40px] w-full text-white gap-1 rounded-md flex items-center justify-center text-base bg-[#46A358] cursor-pointer"
+      >
         Proceed to Checkout
       </button>
       <h3
