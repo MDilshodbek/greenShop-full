@@ -1,12 +1,56 @@
 import { LoadingOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Radio } from "antd";
+import { Button, Form, Input, notification, Radio } from "antd";
 import { useState } from "react";
+import useAuth from "../../../../configs/auth";
+import useAxios from "../../../../hooks/axios";
+import { useDispatch } from "react-redux";
+import { setauthModal } from "../../../../redux/generic-slices/modals";
+import { useShoppingService } from "../../../../services/shopping";
+import { useNavigate } from "react-router-dom";
 
 const BillingAdress = () => {
+  const navigate = useNavigate();
+  const { products, coupon, onClear } = useShoppingService();
+  const axios = useAxios();
+  const dispatch = useDispatch();
+  const { isAuthed } = useAuth();
   const [loading, setLoading] = useState(false);
 
-  const onFinish = (values) => {
-    console.log(values);
+  const total = products?.reduce((prev, { quantity, price }) => {
+    return quantity * price + prev;
+  }, 0);
+
+  const onFinish = async (values) => {
+    if (!isAuthed()) dispatch(setauthModal());
+
+    setLoading(true);
+    await axios({
+      url: "/order/make-order",
+      method: "POST",
+      data: {
+        shop_list: products.map((product) => ({
+          ...product,
+          count: product.quantity,
+        })),
+        billing_address: values,
+        extra_shop_info: {
+          total_price: coupon
+            ? total
+            : Number(total * Number(`0.${coupon.discount_for}`)),
+          method: values.payment_method,
+          coupon: {
+            has_coupon: Boolean(coupon),
+            discount_for: coupon?.discount_for ?? 0,
+          },
+        },
+      },
+    });
+    setLoading(false);
+    onClear();
+    navigate("/");
+    notification.success({
+      message: "Order placed successfully",
+    });
   };
   return (
     <div className="w-[60%] max-md:w-[100%]">
