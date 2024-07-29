@@ -6,6 +6,7 @@ const modal = createSlice({
     categoryModal: false,
     authModal: false,
     siteMap: false,
+    confirmModal: false,
   },
   reducers: {
     setCategoryModal: (state) => {
@@ -17,8 +18,12 @@ const modal = createSlice({
     setSiteMap: (state) => {
       state.siteMap = !state.siteMap;
     },
+    setConfirmModal: (state) => {
+      state.confirmModal = !state.confirmModal;
+    },
   },
 });
 
 export default modal.reducer;
-export const { setCategoryModal, setauthModal, setSiteMap } = modal.actions;
+export const { setCategoryModal, setauthModal, setSiteMap, setConfirmModal } =
+  modal.actions;

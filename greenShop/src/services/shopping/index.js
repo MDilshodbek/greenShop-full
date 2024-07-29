@@ -93,6 +93,12 @@ export const useShoppingService = () => {
     dispatch(setCoupon(data?.data));
   };
 
+  const setInitial = () => {
+    localStorage.removeItem("products");
+    dispatch(setShoppingProducts([]));
+    dispatch(setCoupon(null));
+  };
+
   return {
     onAdd,
     products,
@@ -101,6 +107,7 @@ export const useShoppingService = () => {
     onDecrement,
     applyCoupon,
     onClear,
+    setInitial,
     coupon,
   };
 };

@@ -4,13 +4,14 @@ import { useState } from "react";
 import useAuth from "../../../../configs/auth";
 import useAxios from "../../../../hooks/axios";
 import { useDispatch } from "react-redux";
-import { setauthModal } from "../../../../redux/generic-slices/modals";
+import {
+  setauthModal,
+  setConfirmModal,
+} from "../../../../redux/generic-slices/modals";
 import { useShoppingService } from "../../../../services/shopping";
-import { useNavigate } from "react-router-dom";
 
 const BillingAdress = () => {
-  const navigate = useNavigate();
-  const { products, coupon, onClear } = useShoppingService();
+  const { products, coupon } = useShoppingService();
   const axios = useAxios();
   const dispatch = useDispatch();
   const { isAuthed } = useAuth();
@@ -36,7 +37,7 @@ const BillingAdress = () => {
         extra_shop_info: {
           total_price: coupon
             ? total
-            : Number(total * Number(`0.${coupon.discount_for}`)),
+            : Number(total * Number(`0.${coupon?.discount_for}`)),
           method: values.payment_method,
           coupon: {
             has_coupon: Boolean(coupon),
@@ -46,8 +47,7 @@ const BillingAdress = () => {
       },
     });
     setLoading(false);
-    onClear();
-    navigate("/");
+    dispatch(setConfirmModal());
     notification.success({
       message: "Order placed successfully",
     });
