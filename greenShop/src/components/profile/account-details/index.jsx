@@ -4,7 +4,7 @@ import useAuth from "../../../configs/auth";
 import useAxios from "../../../hooks/axios";
 
 const AccountDetails = () => {
-  const { getUser } = useAuth();
+  const { getUser, updateUser } = useAuth();
   const { user } = getUser();
   const axios = useAxios();
 
@@ -14,6 +14,16 @@ const AccountDetails = () => {
       method: "POST",
       data: {
         _id: user?._id,
+        ...e,
+        profile_photo:
+          e?.profile_photo?.file?.response?.image_url?.url ??
+          user?.profile_photo,
+      },
+    });
+
+    updateUser({
+      setter: {
+        ...user,
         ...e,
         profile_photo:
           e?.profile_photo?.file?.response?.image_url?.url ??

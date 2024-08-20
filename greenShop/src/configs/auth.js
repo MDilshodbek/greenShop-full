@@ -22,7 +22,11 @@ const useAuth = () => {
     return !!cookie.get("token");
   };
 
-  return { signIn, signOut, getUser, isAuthed };
+  const updateUser = ({ setter }) => {
+    cookie.set("user", JSON.stringify(setter));
+  };
+
+  return { signIn, signOut, getUser, isAuthed, updateUser };
 };
 
 export default useAuth;

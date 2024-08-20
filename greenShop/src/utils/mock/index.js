@@ -64,7 +64,7 @@ export const dashboard_mock = [
   {
     path: "address",
     Icon: EnvironmentOutlined,
-    Component: AccountDetails,
+    Component: Adress,
     title: "Address",
     id: 2,
   },
