@@ -1,9 +1,46 @@
-import { Checkbox, Form } from "antd";
-import { useAuth } from "../../../configs/auth";
+import { Button, Checkbox, Form, Input, notification } from "antd";
+import useAuth from "../../../configs/auth";
+import useAxios from "../../../hooks/axios";
 
-const Adress = () => {
-  const { getUser } = useAuth();
+const Address = () => {
+  const { getUser, updateUser } = useAuth();
   const { user } = getUser();
+  const axios = useAxios();
+
+  const onFinish = async (e) => {
+    console.log(e);
+    axios({
+      url: "/user/address",
+      method: "POST",
+      data: {
+        _id: user?._id,
+        ...e,
+      },
+    });
+
+    updateUser({
+      setter: {
+        ...user,
+        name: String(e?.name),
+        surname: String(e?.surname),
+        email: String(e?.email),
+        phone_number: String(e?.phone_number),
+        billing_address: {
+          country: String(e?.country),
+          extra_address: String(e?.extra_address),
+          state: String(e?.state),
+          street_address: String(e?.street_address),
+          town: String(e?.town),
+          zip: String(e?.zip),
+        },
+      },
+    });
+
+    notification.success({
+      message: "Address updated successfully",
+      type: "success",
+    });
+  };
   return (
     <div className="w-full">
       <div className="flex justify-between mb-[30px]">
@@ -16,7 +53,213 @@ const Adress = () => {
         </div>
         <p className="text-[#46A358] font-bold cursor-pointer">Add</p>
       </div>
-      <Form action=""></Form>
+      <Form
+        name="Complex-form"
+        labelCol={{
+          span: 12,
+        }}
+        wrapperCol={{
+          span: 26,
+        }}
+        layout="vertical"
+        className="w-full"
+        size="large"
+        onFinish={onFinish}
+        initialValues={{
+          name: String(user?.name),
+          surname: String(user?.surname),
+          email: String(user?.email),
+          name: String(user?.name),
+          phone_number: String(user?.phone_number),
+          country: String(user?.billing_address?.country),
+          town: String(user?.billing_address?.town),
+          street_address: String(user?.billing_address?.street_address),
+          extra_address: String(user?.billing_address?.extra_address),
+          state: String(user?.billing_address?.state),
+          zip: String(user?.billing_address?.zip),
+        }}
+      >
+        <Form.Item
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+          style={{
+            marginBottom: 0,
+          }}
+        >
+          <Form.Item
+            label="First name"
+            name="name"
+            rules={[{ required: true }]}
+            style={{
+              display: "inline-block",
+              width: "calc(50% - 8px)",
+            }}
+          >
+            <Input placeholder="Type your first name..." />
+          </Form.Item>
+          <Form.Item
+            label="Last name"
+            name="last_name"
+            rules={[{ required: true }]}
+            style={{
+              display: "inline-block",
+              width: "calc(50% - 8px)",
+              margin: "0 8px",
+            }}
+          >
+            <Input placeholder="Type your last name..." />
+          </Form.Item>
+        </Form.Item>
+
+        <Form.Item
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+          style={{
+            marginBottom: 0,
+          }}
+        >
+          <Form.Item
+            label="Country / Region"
+            name="country"
+            rules={[{ required: true }]}
+            style={{
+              display: "inline-block",
+              width: "calc(50% - 8px)",
+            }}
+          >
+            <Input placeholder="Select your country..." />
+          </Form.Item>
+          <Form.Item
+            label="Town / City"
+            name="town"
+            rules={[{ required: true }]}
+            style={{
+              display: "inline-block",
+              width: "calc(50% - 8px)",
+              margin: "0 8px",
+            }}
+          >
+            <Input placeholder="Select your town..." />
+          </Form.Item>
+        </Form.Item>
+        <Form.Item
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+          style={{
+            marginBottom: 0,
+          }}
+        >
+          <Form.Item
+            label="Street Address / City"
+            name="street_address"
+            rules={[{ required: true }]}
+            style={{
+              display: "inline-block",
+              width: "calc(50% - 8px)",
+            }}
+          >
+            <Input placeholder="House number and street name" />
+          </Form.Item>
+          <Form.Item
+            label="Extra Address"
+            name="extra_address"
+            rules={[{ required: true }]}
+            style={{
+              display: "inline-block",
+              width: "calc(50% - 8px)",
+              margin: "0 8px",
+            }}
+          >
+            <Input placeholder="Appartment, suite, unite, etc. (optional)" />
+          </Form.Item>
+        </Form.Item>
+        <Form.Item
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+          style={{
+            marginBottom: 0,
+          }}
+        >
+          <Form.Item
+            label="State"
+            name="state"
+            rules={[{ required: true }]}
+            style={{
+              display: "inline-block",
+              width: "calc(50% - 8px)",
+            }}
+          >
+            <Input placeholder="Select a state..." />
+          </Form.Item>
+          <Form.Item
+            label="Zip"
+            name="zip"
+            rules={[{ required: true }]}
+            style={{
+              display: "inline-block",
+              width: "calc(50% - 8px)",
+              margin: "0 8px",
+            }}
+          >
+            <Input placeholder="Input your town zip code" />
+          </Form.Item>
+        </Form.Item>
+        <Form.Item
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+          style={{
+            marginBottom: 0,
+          }}
+        >
+          <Form.Item
+            label="Email address"
+            name="email"
+            rules={[{ required: true }]}
+            style={{
+              display: "inline-block",
+              width: "calc(50% - 8px)",
+            }}
+          >
+            <Input disabled placeholder="Type your email..." />
+          </Form.Item>
+          <Form.Item
+            label="Phone number"
+            name="phone_number"
+            rules={[{ required: true }]}
+            style={{
+              display: "inline-block",
+              width: "calc(50% - 8px)",
+              margin: "0 8px",
+            }}
+          >
+            <Input
+              addonBefore={"+998"}
+              placeholder="Type your phone number..."
+            />
+          </Form.Item>
+        </Form.Item>
+        <button
+          type="submit"
+          className="h-[40px] px-[10px] mt-[15px] text-white text-base gap-1 justfy-center items-center rounded-md flex bg-[#46A358]"
+        >
+          Save Address
+        </button>
+      </Form>
       <div className="flex justify-between mt-[30px]">
         <div>
           <h3 className="mb-[10px] font-bold">Shopping Address</h3>
@@ -33,4 +276,4 @@ const Adress = () => {
   );
 };
 
-export default Adress;
+export default Address;
