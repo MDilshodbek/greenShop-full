@@ -48,7 +48,7 @@ const Wishlist = () => {
 
   return (
     <div className="w-full mt-[30px] gap-4 grid grid-cols-3 max-ms:grid-cols-2">
-      {data.map((value) => (
+      {data.filter(Boolean).map((value) => (
         <Card {...value} key={value._id} />
       ))}
     </div>
