@@ -1,7 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxios from "../../../hooks/axios";
-import { Skeleton } from "antd";
+import { Empty, Skeleton } from "antd";
 import Order from "./order";
+import ViewOrder from "./modals/view-order";
 
 const TrackOrder = () => {
   const axios = useAxios();
@@ -36,15 +37,34 @@ const TrackOrder = () => {
       </div>
     );
 
-  return (
-    <div className="p-[15px] w-full">
-      <h1 className="font-bold text-xl mb-[20px]">Track your orders</h1>
-      <div className="flex flex-col gap-3">
-        {data.map((value) => (
-          <Order {...value} key={value._id} />
-        ))}
+  if (!data.length)
+    return (
+      <div className="flex items-center justify-center w-full">
+        <Empty
+          className="mt-[10px]"
+          description={
+            <div>
+              <h3 className="text-[18px] text-bold">
+                No products to track yet...
+              </h3>
+            </div>
+          }
+        />
       </div>
-    </div>
+    );
+
+  return (
+    <>
+      <ViewOrder />
+      <div className="p-[15px] w-full">
+        <h1 className="font-bold text-xl mb-[20px]">Track your orders</h1>
+        <div className="flex flex-col gap-3">
+          {data.map((value) => (
+            <Order {...value} key={value._id} />
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 

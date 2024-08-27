@@ -15,13 +15,16 @@ const Card = (props) => {
   const navigate = useNavigate();
   const { onAdd } = useShoppingService();
 
-  const { title, main_image, price, _id, category } = props;
+  const { title, main_image, price, _id, category, __v } = props;
 
-  const addToWishList = () => {
-    if (!isAuthed()) return dispatch(setauthModal());
-  };
   const viewProduct = () => {
     navigate(`/product/${category}/${_id}`);
+  };
+
+  const handleAddToWishList = () => {
+    if (!isAuthed()) {
+      return dispatch(setauthModal());
+    }
   };
 
   return (
@@ -37,10 +40,14 @@ const Card = (props) => {
               <ShoppingCartOutlined />
             </div>
             <div
-              onClick={addToWishList}
+              onClick={handleAddToWishList}
               className="w-[35px] h-[35px] rounded-md cursor-pointer bg-white flex items-center justify-center"
             >
-              <HeartOutlined />
+              {isAuthed ? (
+                <HeartOutlined className="text-red" />
+              ) : (
+                <HeartOutlined />
+              )}
             </div>
             <div
               onClick={viewProduct}
@@ -57,13 +64,11 @@ const Card = (props) => {
         <div className="w-fit h-[200px] bg-[#fbfbfb] relative group">
           <img className="w-full h-full" src={main_image} alt="flower" />
           <div className="absolute bottom-6 z-10 gap-4 left-[70px] hidden group-hover:flex">
-            <div
-              className="w-[35px] h-[35px] rounded-md cursor-pointer bg-white flex items-center justify-center"
-            >
+            <div className="w-[35px] h-[35px] rounded-md cursor-pointer bg-white flex items-center justify-center">
               <ShoppingCartOutlined />
             </div>
             <div
-              onClick={addToWishList}
+              onClick={handleAddToWishList}
               className="w-[35px] h-[35px] rounded-md cursor-pointer bg-white flex items-center justify-center"
             >
               <HeartOutlined />

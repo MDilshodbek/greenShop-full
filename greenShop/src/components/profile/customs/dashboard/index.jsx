@@ -2,11 +2,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { dashboard_mock } from "../../../../utils/mock";
 import { ExclamationCircleFilled, LogoutOutlined } from "@ant-design/icons";
 import { Modal } from "antd";
+import useAuth from "../../../../configs/auth";
 const { confirm } = Modal;
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { signOut } = useAuth();
 
   const onLogout = () => {
     return confirm({
@@ -18,7 +20,9 @@ const Dashboard = () => {
       },
       okText: "I'm sure",
       onOk: () => {
-        console.log("Ok!");
+        navigate("/");
+        windowlocation.replace("/");
+        signOut();
       },
     });
   };

@@ -7,7 +7,7 @@ const Wishlist = () => {
   const axios = useAxios();
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: "wishlist",
+    queryKey: ["wishlist"],
     queryFn: async () => {
       const { data } = await axios({
         url: "/user/wishlist",
@@ -36,14 +36,16 @@ const Wishlist = () => {
 
   if (!data.length)
     return (
-      <Empty
-        className="mt-[10px]"
-        description={
-          <div>
-            <h3 className="text-[18px] text-bold">No wishproducts yet...</h3>
-          </div>
-        }
-      />
+      <div className="flex items-center justify-center w-full">
+        <Empty
+          className="mt-[10px]"
+          description={
+            <div>
+              <h3 className="text-[18px] text-bold">No wishproducts yet...</h3>
+            </div>
+          }
+        />
+      </div>
     );
 
   return (

@@ -7,8 +7,10 @@ import ShoppingCart from "./pages/shopping-cart";
 import ProCheckout from "./pages/proCheckout";
 import Profile from "./components/profile";
 import { dashboard_mock } from "./utils/mock";
+import useAuth from "./configs/auth";
 
 function App() {
+  const { isAuthed } = useAuth();
   return (
     <div>
       <Navbar />
@@ -17,11 +19,13 @@ function App() {
         <Route path="/product/:category/:productId" element={<Product />} />
         <Route path="/shopping-cart" element={<ShoppingCart />} />
         <Route path="/product-checkout" element={<ProCheckout />} />
-        <Route path="/profile" element={<Profile />}>
-            {dashboard_mock.map(({ path, Component }) => (
-            <Route path={path} element={<Component />} />
-          ))}
-        </Route>
+        {isAuthed() && (
+          <Route path="/profile" element={<Profile />}>
+            {dashboard_mock.map(({ path, Component, _id }) => (
+              <Route key={_id} path={path} element={<Component />} />
+            ))}
+          </Route>
+        )}
       </Routes>
       <Footer />
     </div>
