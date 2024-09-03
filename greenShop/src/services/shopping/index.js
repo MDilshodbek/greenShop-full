@@ -1,12 +1,54 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setCoupon, setShoppingProducts } from "../../redux/slices/shopping";
-import { notification } from "antd";
+import useAuth from "../../configs/auth";
 import useAxios from "../../hooks/axios";
+import { setlikedFLowers } from "../../redux/slices/wishlist";
 
 export const useShoppingService = () => {
+  const { updateUser, getUser } = useAuth();
+  const user = getUser();
   const axios = useAxios();
   const dispatch = useDispatch();
   const { products, coupon } = useSelector(({ shopping }) => shopping);
+  const { likedFLowers } = useSelector(({ wishlist }) => wishlist);
+
+  const likeAdd = async (flower) => {
+    const isFlowerLiked = likedFLowers.some((item) => item._id === flower._id);
+    console.log("Flower to be added:", flower);
+    console.log("Current wishlist:", likedFLowers);
+
+    if (isFlowerLiked) {
+      return notification.error({
+        message: "The flower you chose is already on the wishlist",
+      });
+    }
+
+    // Add the flower to the wishlist in the local state
+    const updatedFlowers = [...likedFLowers, { ...flower }];
+
+    // Update Redux state
+    dispatch(setlikedFLowers(updatedFlowers));
+
+    // Update local storage
+    localStorage.setItem("likedFLowers", JSON.stringify(updatedFlowers));
+
+    try {
+      // Make the API call to update the backend wishlist
+      await axios({
+        url: "/user/create-wishlist",
+        method: "POST",
+        data: {
+          _id: flower._id,
+        },
+      });
+
+      console.log("Flower added to wishlist:", flower);
+    } catch (error) {
+      console.error("Failed to add flower to the wishlist:", error);
+      // Rollback local and Redux state if needed
+      dispatch(setlikedFLowers(likedFLowers));
+      localStorage.setItem("likedFLowers", JSON.stringify(likedFLowers));
+    }
+  };
 
   const onAdd = (product) => {
     const index = products.find((item) => item._id === product._id);
@@ -109,5 +151,6 @@ export const useShoppingService = () => {
     onClear,
     setInitial,
     coupon,
+    likeAdd,
   };
 };

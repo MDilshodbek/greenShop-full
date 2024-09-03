@@ -1,29 +1,49 @@
 import {
+  HeartFilled,
   HeartOutlined,
   SearchOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
 import useAuth from "../../../../../configs/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setauthModal } from "../../../../../redux/generic-slices/modals";
 import { useNavigate } from "react-router-dom";
 import { useShoppingService } from "../../../../../services/shopping";
+import { notification } from "antd";
+import { useEffect, useState } from "react";
 
 const Card = (props) => {
   const { isAuthed } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { onAdd } = useShoppingService();
+  const { onAdd, likeAdd } = useShoppingService();
+  const { likedFLowers } = useSelector(({ wishlist }) => wishlist); // Access the liked flowers state
 
-  const { title, main_image, price, _id, category, __v } = props;
+  const { title, main_image, price, _id, category } = props;
+
+  const [isLiked, setIsLiked] = useState(false);
+
+  // Check if the current flower is in the wishlist
+  useEffect(() => {
+    setIsLiked(likedFLowers.some((item) => item._id === _id));
+  }, [likedFLowers, _id]);
 
   const viewProduct = () => {
     navigate(`/product/${category}/${_id}`);
   };
 
-  const handleAddToWishList = () => {
+  const handleAddToWishList = async () => {
     if (!isAuthed()) {
+      // If the user is not logged in, show the authentication modal
       return dispatch(setauthModal());
+    }
+
+    try {
+      await likeAdd(props);
+      // Update local state to reflect the addition
+      setIsLiked(true);
+    } catch (error) {
+      console.error("Failed to add flower to the wishlist:", error);
     }
   };
 
@@ -43,8 +63,8 @@ const Card = (props) => {
               onClick={handleAddToWishList}
               className="w-[35px] h-[35px] rounded-md cursor-pointer bg-white flex items-center justify-center"
             >
-              {isAuthed ? (
-                <HeartOutlined className="text-red" />
+              {isLiked ? (
+                <HeartFilled className="text-[#ff0505]" />
               ) : (
                 <HeartOutlined />
               )}
@@ -71,7 +91,11 @@ const Card = (props) => {
               onClick={handleAddToWishList}
               className="w-[35px] h-[35px] rounded-md cursor-pointer bg-white flex items-center justify-center"
             >
-              <HeartOutlined />
+              {isLiked ? (
+                <HeartFilled className="text-[#ff0505]" />
+              ) : (
+                <HeartOutlined />
+              )}
             </div>
             <div
               onClick={viewProduct}
