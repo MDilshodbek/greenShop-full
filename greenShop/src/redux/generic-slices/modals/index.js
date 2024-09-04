@@ -8,6 +8,7 @@ const modal = createSlice({
     siteMap: false,
     confirmModal: false,
     trackModal: { show: false, data: null },
+    addModal: false,
   },
   reducers: {
     setCategoryModal: (state) => {
@@ -25,6 +26,9 @@ const modal = createSlice({
     setTrackModal: (state, { payload }) => {
       state.trackModal = payload;
     },
+    setAddModal: (state) => {
+      state.addModal = !state.addModal;
+    },
   },
 });
 
@@ -35,4 +39,5 @@ export const {
   setSiteMap,
   setConfirmModal,
   setTrackModal,
+  setAddModal,
 } = modal.actions;

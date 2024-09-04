@@ -1,7 +1,19 @@
-import { Button, Form, Input, Modal, Select, Upload } from "antd";
+import { Form, Input, Modal, Select, Upload } from "antd";
 import { useState } from "react";
+import { useMyProductFeatures } from "../../features";
+import { useSelector } from "react-redux";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const Create = () => {
+  const {
+    category: { data, isLoading },
+    onPublish,
+    onCancelRequest,
+  } = useMyProductFeatures();
+
+  const { addModal } = useSelector(({ modal }) => modal);
+  const { loading, setLoading } = useState(false);
+
   const [isShow, setShow] = useState({
     isShowMainUpload: true,
     isShowAdditionalUpload_1: true,
@@ -10,21 +22,39 @@ const Create = () => {
     isShowAdditionalUpload_4: true,
   });
 
-  const onFinish = () => {};
-
   const onUploadChange = (setter) => {
     setShow({ ...isShow, ...setter });
+  };
+
+  const onFinishHandle = async (e) => {
+    setLoading(true);
+    await onPublish(e);
+    setLoading(false);
+  };
+
+  const uploadProps = {
+    name: "image",
+    action:
+      "https://greenshop.abduvoitov.com/api/upload?access_token=64bebc1e2c6d3f056a8c85b7",
+    listType: "picture-card",
+    className: "w-full",
+    data: { type: "img" },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    accept: ".png,.jpg,.jpeg",
   };
 
   return (
     <Modal
       width={700}
       title={"Add plant"}
-      open={true}
+      open={addModal}
       okText="Add"
       cancelButtonProps={{ type: "ghost", danger: true }}
       okButtonProps={{ type: "default" }}
       footer={false}
+      onCancel={() => !loading && onCancelRequest()}
     >
       <Form
         name="complex-form"
@@ -37,7 +67,7 @@ const Create = () => {
         layout="vertical"
         className="w-full"
         size="large"
-        onFinish={onFinish}
+        onFinish={onFinishHandle}
       >
         <Form.Item
           rules={[
@@ -110,7 +140,12 @@ const Create = () => {
             }}
           >
             <Select
-              //   loading={isLoading}
+              options={data?.map((v) => ({
+                ...v,
+                label: v.title,
+                value: v.route_path,
+              }))}
+              loading={isLoading}
               placeholder="Category your product..."
             />
           </Form.Item>
@@ -197,7 +232,10 @@ const Create = () => {
             width: "calc(100% - 8px)",
           }}
         >
-          <Upload onChange={() => onUploadChange({ isShowMainUpload: false })}>
+          <Upload
+            {...uploadProps}
+            onChange={() => onUploadChange({ isShowMainUpload: false })}
+          >
             {isShow.isShowMainUpload ? "Upload your main image!" : null}
           </Upload>
         </Form.Item>
@@ -212,7 +250,7 @@ const Create = () => {
             rules={[
               {
                 required: true,
-                message: "Please, upload additonal image.",
+                message: "Please, upload additional image.",
               },
             ]}
             style={{
@@ -221,14 +259,21 @@ const Create = () => {
               marginRight: "10px",
             }}
           >
-            <Upload></Upload>
+            <Upload
+              {...uploadProps}
+              onChange={() =>
+                onUploadChange({ isShowAdditionalUpload_1: false })
+              }
+            >
+              {isShow.isShowMainUpload ? "Upload your image!" : null}
+            </Upload>
           </Form.Item>
           <Form.Item
             name="detailed_image_2"
             rules={[
               {
                 required: true,
-                message: "Please, upload additonal image.",
+                message: "Please, upload additional image.",
               },
             ]}
             style={{
@@ -236,14 +281,21 @@ const Create = () => {
               width: "calc(50% - 8px)",
             }}
           >
-            <Upload></Upload>
+            <Upload
+              {...uploadProps}
+              onChange={() =>
+                onUploadChange({ isShowAdditionalUpload_2: false })
+              }
+            >
+              {isShow.isShowMainUpload ? "Upload your image!" : null}
+            </Upload>
           </Form.Item>
           <Form.Item
             name="detailed_image_3"
             rules={[
               {
                 required: true,
-                message: "Please, upload additonal image.",
+                message: "Please, upload additional image.",
               },
             ]}
             style={{
@@ -252,14 +304,21 @@ const Create = () => {
               marginRight: "10px",
             }}
           >
-            <Upload></Upload>
+            <Upload
+              {...uploadProps}
+              onChange={() =>
+                onUploadChange({ isShowAdditionalUpload_3: false })
+              }
+            >
+              {isShow.isShowMainUpload ? "Upload your image!" : null}
+            </Upload>
           </Form.Item>
           <Form.Item
             name="detailed_image_4"
             rules={[
               {
                 required: true,
-                message: "Please, upload additonal image.",
+                message: "Please, upload additional image.",
               },
             ]}
             style={{
@@ -267,13 +326,26 @@ const Create = () => {
               width: "calc(50% - 8px)",
             }}
           >
-            <Upload></Upload>
+            <Upload
+              {...uploadProps}
+              onChange={() =>
+                onUploadChange({ isShowAdditionalUpload_4: false })
+              }
+            >
+              {isShow.isShowMainUpload ? "Upload your image!" : null}
+            </Upload>
           </Form.Item>
         </Form.Item>
         <div className="flex gap-4 justify-end">
-          <button danger>Cancel</button>
-          <button type="submit" className="py-[10px] px-[15px]">
-            Add
+          <button disabled={loading} onClick={onCancelRequest}>
+            Cancel
+          </button>
+          <button
+            htmlType="submit"
+            disabled={loading}
+            className="py-[10px] px-[15px] bg-[#46A358] rounded-md text-white"
+          >
+            {loading ? <LoadingOutlined /> : "Add"}
           </button>
         </div>
       </Form>
